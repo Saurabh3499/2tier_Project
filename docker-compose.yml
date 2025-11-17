@@ -1,23 +1,27 @@
 version: '3.8'
 
 services:
-  mongo:
-    image: mongo:6.0
+  mongodb:
+    image: docker.io/library/mongo:6.0
     container_name: mongo
     restart: unless-stopped
+    ports:
+      - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
 
-  web:
-    build: ./app
+  flask-app:
+    build:
+      context: ./app      # path to your Flask Dockerfile
+      dockerfile: Dockerfile
     container_name: todo-app
+    restart: unless-stopped
     ports:
       - "5000:5000"
-    environment:
-      MONGO_HOST: mongo
     depends_on:
-      - mongo
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/todo_db
 
 volumes:
-  mongo-data:
-
+  mongo_data:
