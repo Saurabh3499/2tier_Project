@@ -29,11 +29,6 @@ def add_task():
     coll.insert_one({'task': data['task'], 'completed': False})
     return jsonify({'status': 'ok'}), 201
 
-@app.route('/api/tasks/<string:task_name>', methods=['PUT'])
-def update_task(task_name):
-    coll.update_one({'task': task_name}, {'$set': {'completed': True}})
-    return jsonify({'status': 'updated'})
-
 @app.route('/api/tasks/<string:task_name>', methods=['DELETE'])
 def delete_task(task_name):
     coll.delete_one({'task': task_name})
