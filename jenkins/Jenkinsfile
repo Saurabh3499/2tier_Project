@@ -16,14 +16,14 @@ pipeline {
         stage('Build') {
             steps {
                 dir('app') {
-                    sh 'podman build -t $IMAGE_NAME:$TAG .'
+                    sh 'sudo podman build -t $IMAGE_NAME:$TAG .'
                 }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'podman run --rm $IMAGE_NAME:$TAG pytest -q'
+                sh 'sudo podman run --rm $IMAGE_NAME:$TAG pytest -q'
             }
         }
     }
