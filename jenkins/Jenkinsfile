@@ -9,21 +9,21 @@ pipeline {
     stages {
         stage('Checkout') {
             steps { 
-                checkout scm 
+                git  'https://github.com/Saurabh3499/project.git'
             }
         }
 
         stage('Build') {
             steps {
                 dir('app') {
-                    sh 'docker build -t $IMAGE_NAME:$TAG .'
+                    sh 'podman build -t $IMAGE_NAME:$TAG .'
                 }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'docker run --rm $IMAGE_NAME:$TAG pytest -q'
+                sh 'podman run --rm $IMAGE_NAME:$TAG pytest -q'
             }
         }
     }
