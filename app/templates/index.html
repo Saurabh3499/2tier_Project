@@ -10,19 +10,48 @@
     </style>
 </head>
 <body>
+
     <h1>To-Do List</h1>
 
     {% for t in tasks %}
     <div class="task">
-        <input type="checkbox" {% if t.completed %}checked{% endif %}> {{ t.task }}
-        <button>Delete</button>
+        <input type="checkbox" {% if t.completed %}checked{% endif %}>
+        <span style="margin-left:10px;">{{ t.task }}</span>
+
+        <button onclick="deleteTask('{{ t.task }}')">Delete</button>
     </div>
     {% endfor %}
 
     <br><br>
-    <input type="text" placeholder="New task">
-    <button>Add</button>
+
+    <input type="text" id="taskInput" placeholder="New task">
+    <button onclick="addTask()">Add</button>
+
+    <script>
+        async function addTask() {
+            const task = document.getElementById("taskInput").value;
+
+            if (!task) {
+                alert("Please enter a task");
+                return;
+            }
+
+            await fetch("/api/tasks", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ task: task })
+            });
+
+            window.location.reload();
+        }
+
+        async function deleteTask(taskName) {
+            await fetch(`/api/tasks/${taskName}`, {
+                method: "DELETE"
+            });
+            window.location.reload();
+        }
+    </script>
 
 </body>
 </html>
-
