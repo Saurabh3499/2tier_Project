@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 30px; }
+        h1 { font-size: 40px; }
+        .task { margin: 10px 0; display: flex; align-items: center; }
+        button { margin-left: 15px; }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    {% for t in tasks %}
+    <div class="task">
+        <input type="checkbox" {% if t.completed %}checked{% endif %}> {{ t.task }}
+        <button>Delete</button>
+    </div>
+    {% endfor %}
+
+    <br><br>
+    <input type="text" placeholder="New task">
+    <button>Add</button>
+
+</body>
+</html>
+

@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "yourdockerhub/todo-app"
+        TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps { 
+                checkout scm 
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('app') {
+                    sh 'docker build -t $IMAGE_NAME:$TAG .'
+                }
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'docker run --rm $IMAGE_NAME:$TAG pytest -q'
+            }
+        }
+    }
+}
+
